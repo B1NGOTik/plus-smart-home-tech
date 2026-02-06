@@ -2,9 +2,11 @@ package ru.yandex.practicum.telemetry.collector.model.sensor;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 
@@ -24,6 +26,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class SensorEvent {
     String id;
     String hubId;

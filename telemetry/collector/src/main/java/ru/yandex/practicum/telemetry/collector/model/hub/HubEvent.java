@@ -2,9 +2,11 @@ package ru.yandex.practicum.telemetry.collector.model.hub;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 
@@ -23,9 +25,10 @@ import java.time.Instant;
 @Setter
 @Getter
 @ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class HubEvent {
-    private String hubId;
-    private Instant timestamp = Instant.now();
+    String hubId;
+    Instant timestamp = Instant.now();
 
     public abstract HubEventType getType();
 }
