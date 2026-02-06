@@ -1,13 +1,6 @@
 @namespace("ru.yandex.practicum.kafka.telemetry.event")
 protocol HubEventProtocol {
-	enum EventType{
-		DEVICE_ADDED,
-		DEVICE_REMOVED,
-		SCENARIO_ADDED,
-		SCENARIO_REMOVED
-	}
-
-	enum DeviceType{
+	enum DeviceTypeAvro{
 		MOTION_SENSOR,
 		TEMPERATURE_SENSOR,
 		LIGHT_SENSOR,
@@ -15,14 +8,14 @@ protocol HubEventProtocol {
 		SWITCH_SENSOR
 	}
 
-	enum ActionType{
+	enum ActionTypeAvro{
 		ACTIVATE,
 		DEACTIVATE,
 		INVERSE,
 		SET_VALUE
 	}
 
-	enum Condition{
+	enum ConditionTypeAvro{
 		MOTION,
 		LUMINOSITY,
 		SWITCH,
@@ -31,53 +24,47 @@ protocol HubEventProtocol {
 		HUMIDITY
 	}
 
-	enum Operation{
+	enum ConditionOperationAvro{
 		EQUALS,
 		GREATER_THAN,
 		LOWER_THAN
 	}
 
-	record DeviceAddedEvent{
-		string hubId;
-		timestamp_ms timestamp;
+	record DeviceAddedEventAvro{
 		string id;
-		DeviceType deviceType;
-		EventType type;
+		DeviceTypeAvro type;
 	}
 
-	record DeviceRemovedEvent{
-		string hubId;
-		timestamp_ms timestamp;
+	record DeviceRemovedEventAvro{
 		string id;
-		EventType type;
 	}
 
-	record DeviceAction{
-		string sensorId;
-		DeviceType type;
-		int value;
+	record DeviceActionAvro{
+		string sensor_id;
+		ActionTypeAvro type;
+		int? value = null;
 	}
 
-	record ScenarioCondition{
-		string sensorId;
-		Condition type;
-		Operation operation;
-		int value;
+	record ScenarioConditionAvro{
+		string sensor_id;
+		ConditionTypeAvro type;
+		ConditionOperationAvro operation;
+		union{null, int, boolean} value = null;
 	}
 
-	record ScenarioAddedEvent{
-		string hubId;
-		timestamp_ms timestamp;
+	record ScenarioAddedEventAvro{
 		string name;
-		array<ScenarioCondition> conditions;
-		array<DeviceAction> actions;
-		EventType type;
+		array<ScenarioConditionAvro> conditions;
+		array<DeviceActionAvro> actions;
 	}
 
-	record ScenarioRemovedEvent{
-		string hubId;
-		timestamp_ms timestamp;
+	record ScenarioRemovedEventAvro{
 		string name;
-		EventType type;
+	}
+
+	record HubEventAvro{
+		string hub_id;
+		timestamp_ms timestamp;
+		union {DeviceAddedEventAvro, DeviceRemovedEventAvro, ScenarioAddedEventAvro, ScenarioRemovedEventAvro} payload;
 	}
 }
