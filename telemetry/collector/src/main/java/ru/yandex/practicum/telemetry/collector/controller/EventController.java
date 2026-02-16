@@ -1,50 +1,81 @@
 package ru.yandex.practicum.telemetry.collector.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ru.yandex.practicum.telemetry.collector.model.hub.HubEvent;
-import ru.yandex.practicum.telemetry.collector.model.hub.HubEventType;
-import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEvent;
-import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEventType;
+import com.google.protobuf.Empty;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
+import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.server.service.GrpcService;
+import ru.yandex.practicum.grpc.telemetry.collector.CollectorControllerGrpc;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.telemetry.collector.service.hub.HubService;
 import ru.yandex.practicum.telemetry.collector.service.sensor.SensorService;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping(path = "/events")
-public class EventController {
-    private final Map<SensorEventType, SensorService> sensorServices;
-    private final Map<HubEventType, HubService> hubServices;
+@Slf4j
+@GrpcService
+public class EventController extends CollectorControllerGrpc.CollectorControllerImplBase {
+    private final Map<SensorEventProto.PayloadCase, SensorService> sensorServices;
+    private final Map<HubEventProto.PayloadCase, HubService> hubServices;
 
-    public EventController(List<SensorService> sensorServiceList,
-                           List<HubService> hubServiceList) {
-        this.sensorServices = sensorServiceList.stream()
-                .collect(Collectors.toMap(SensorService::getMessageType, Function.identity()));
-        this.hubServices = hubServiceList.stream()
-                .collect(Collectors.toMap(HubService::getMessageType, Function.identity()));
+    public EventController(Set<SensorService> sensorServices,
+                           Set<HubService> hubServices) {
+        this.sensorServices = sensorServices
+                .stream()
+                .collect(Collectors.toMap(
+                        SensorService::getMessageType,
+                        Function.identity()
+                ));
+        this.hubServices = hubServices
+                .stream()
+                .collect(Collectors.toMap(
+                        HubService::getMessageType,
+                        Function.identity()
+                ));
     }
 
-    @PostMapping("/sensors")
-    public void handleSensorMessage(@RequestBody SensorEvent event) {
-        if (sensorServices.containsKey(event.getType())) {
-            sensorServices.get(event.getType()).catchEvent(event);
-        } else {
-            throw new IllegalArgumentException("Не найден сервис обработки для события датчика");
+    @Override
+    public void collectSensorEvent(SensorEventProto request, StreamObserver<Empty> responseObserver) {
+        log.info("Получили событие от датчика: {}", request);
+        try {
+            if (sensorServices.containsKey(request.getPayloadCase())) {
+                sensorServices.get(request.getPayloadCase()).catchEvent(request);
+            } else {
+                throw new IllegalArgumentException("Не найден обработчик для события " + request.getPayloadCase());
+            }
+            responseObserver.onNext(Empty.getDefaultInstance());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(new StatusRuntimeException(
+                    Status.INTERNAL
+                            .withDescription(e.getLocalizedMessage())
+                            .withCause(e)
+            ));
         }
     }
 
-    @PostMapping("/hubs")
-    public void handleHubMessage(@RequestBody HubEvent event) {
-        if (hubServices.containsKey(event.getType())) {
-            hubServices.get(event.getType()).catchEvent(event);
-        } else {
-            throw new IllegalArgumentException("Не найден сервис обработки для события хаба");
+    @Override
+    public void collectHubEvent(HubEventProto request, StreamObserver<Empty> responseObserver) {
+        log.info("Получили событие от хаба: {}", request);
+        try {
+            if (hubServices.containsKey(request.getPayloadCase())) {
+                hubServices.get(request.getPayloadCase()).catchEvent(request);
+            } else {
+                throw new IllegalArgumentException("Не найден обработчик для события " + request.getPayloadCase());
+            }
+            responseObserver.onNext(Empty.getDefaultInstance());
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onError(new StatusRuntimeException(
+                    Status.INTERNAL
+                            .withDescription(e.getLocalizedMessage())
+                            .withCause(e)
+            ));
         }
     }
 }
