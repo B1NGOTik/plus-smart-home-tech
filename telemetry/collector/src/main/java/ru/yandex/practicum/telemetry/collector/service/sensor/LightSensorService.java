@@ -1,11 +1,10 @@
 package ru.yandex.practicum.telemetry.collector.service.sensor;
 
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.grpc.telemetry.event.LightSensorProto;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.LightSensorEventAvro;
 import ru.yandex.practicum.telemetry.collector.kafka.ProducerClient;
-import ru.yandex.practicum.telemetry.collector.model.sensor.LightSensorEvent;
-import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEvent;
-import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEventType;
 
 @Service
 public class LightSensorService extends BaseSensorService<LightSensorEventAvro> {
@@ -14,8 +13,8 @@ public class LightSensorService extends BaseSensorService<LightSensorEventAvro> 
     }
 
     @Override
-    protected LightSensorEventAvro mapToAvro(SensorEvent event) {
-        LightSensorEvent lightSensorEvent = (LightSensorEvent) event;
+    protected LightSensorEventAvro mapToAvro(SensorEventProto event) {
+        LightSensorProto lightSensorEvent = event.getLightSensorEvent();
         return LightSensorEventAvro.newBuilder()
                 .setLinkQuality(lightSensorEvent.getLinkQuality())
                 .setLuminosity(lightSensorEvent.getLuminosity())
@@ -23,7 +22,7 @@ public class LightSensorService extends BaseSensorService<LightSensorEventAvro> 
     }
 
     @Override
-    public SensorEventType getMessageType() {
-        return SensorEventType.LIGHT_SENSOR_EVENT;
+    public SensorEventProto.PayloadCase getMessageType() {
+        return SensorEventProto.PayloadCase.LIGHT_SENSOR_EVENT;
     }
 }
