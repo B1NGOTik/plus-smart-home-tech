@@ -1,0 +1,35 @@
+package telemetry.deserialization;
+
+import org.apache.avro.Schema;
+import org.apache.avro.io.*;
+import org.apache.avro.specific.SpecificDatumReader;
+import org.apache.avro.specific.SpecificRecordBase;
+import org.apache.kafka.common.serialization.Deserializer;
+
+
+public class BaseAvroDeserializer<T extends SpecificRecordBase> implements Deserializer<T> {
+    private final DecoderFactory decoderFactory;
+    private final DatumReader<T> reader;
+
+    public BaseAvroDeserializer(Schema schema) {
+        this(DecoderFactory.get(), schema);
+    }
+
+    public BaseAvroDeserializer(DecoderFactory decoderFactory, Schema schema) {
+        reader = new SpecificDatumReader<>(schema);
+        this.decoderFactory = decoderFactory;
+    }
+
+    @Override
+    public T deserialize(String topic, byte[] data) {
+        try{
+            if(data != null) {
+                BinaryDecoder decoder = decoderFactory.binaryDecoder(data, null);
+                return this.reader.read(null, decoder);
+            }
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
