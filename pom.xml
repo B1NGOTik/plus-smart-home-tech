@@ -92,6 +92,13 @@
             </dependency>
 
             <!--    / GRPC dependencies management        -->
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.42</version>
+                <scope>compile</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -109,7 +116,7 @@
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
-                                <version>1.18.30</version>
+                                <version>1.18.42</version>
                             </path>
                         </annotationProcessorPaths>
                     </configuration>
