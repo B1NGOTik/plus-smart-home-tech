@@ -9,13 +9,12 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.mapper.PageMapper;
 import ru.yandex.practicum.mapper.ProductDtoMapper;
 import ru.yandex.practicum.model.Product;
-import ru.yandex.practicum.product.*;
-import ru.yandex.practicum.product.exception.ProductNotFoundException;
+import ru.yandex.practicum.store.*;
+import ru.yandex.practicum.store.exception.ProductNotFoundException;
 import ru.yandex.practicum.repository.ProductRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional

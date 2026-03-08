@@ -2,7 +2,7 @@ package ru.yandex.practicum.mapper;
 
 import lombok.experimental.UtilityClass;
 import ru.yandex.practicum.model.Product;
-import ru.yandex.practicum.product.ProductDto;
+import ru.yandex.practicum.store.ProductDto;
 
 @UtilityClass
 public class ProductDtoMapper {

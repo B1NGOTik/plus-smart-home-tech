@@ -1,4 +1,4 @@
-package ru.yandex.practicum.product;
+package ru.yandex.practicum.store;
 
 public class SetProductQuantityStateRequest {
     String productId;

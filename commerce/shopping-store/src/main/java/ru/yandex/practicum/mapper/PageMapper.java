@@ -2,10 +2,10 @@ package ru.yandex.practicum.mapper;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import ru.yandex.practicum.product.PageProductDto;
-import ru.yandex.practicum.product.PageableObject;
-import ru.yandex.practicum.product.ProductDto;
-import ru.yandex.practicum.product.SortObject;
+import ru.yandex.practicum.store.PageProductDto;
+import ru.yandex.practicum.store.PageableObject;
+import ru.yandex.practicum.store.ProductDto;
+import ru.yandex.practicum.store.SortObject;
 
 import java.util.ArrayList;
 import java.util.List;

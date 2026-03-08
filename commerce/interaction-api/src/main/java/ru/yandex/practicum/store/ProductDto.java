@@ -1,4 +1,4 @@
-package ru.yandex.practicum.product;
+package ru.yandex.practicum.store;
 
 import lombok.*;
 

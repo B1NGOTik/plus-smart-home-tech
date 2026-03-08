@@ -1,11 +1,10 @@
 package ru.yandex.practicum.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ru.yandex.practicum.product.PageProductDto;
-import ru.yandex.practicum.product.ProductCategory;
-import ru.yandex.practicum.product.ProductDto;
-import ru.yandex.practicum.product.QuantityState;
+import ru.yandex.practicum.store.PageProductDto;
+import ru.yandex.practicum.store.ProductCategory;
+import ru.yandex.practicum.store.ProductDto;
+import ru.yandex.practicum.store.QuantityState;
 
 import java.util.UUID;
 

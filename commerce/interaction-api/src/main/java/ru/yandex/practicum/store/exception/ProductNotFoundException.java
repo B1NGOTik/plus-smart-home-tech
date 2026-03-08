@@ -1,4 +1,4 @@
-package ru.yandex.practicum.product.exception;
+package ru.yandex.practicum.store.exception;
 
 public class ProductNotFoundException extends RuntimeException {
     public ProductNotFoundException(String message) {
