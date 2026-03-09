@@ -16,39 +16,38 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/shopping-store")
 @RequiredArgsConstructor
-public class ProductController {
+public class ProductController implements ShoppingStoreRestController {
     private final ProductService productService;
 
-    @PutMapping
-    public ProductDto addProduct(@RequestBody ProductDto product) {
+    @Override
+    public ProductDto addProduct(ProductDto product) {
         log.info("Добавляем продукт: {}", product);
         return productService.addProduct(product);
     }
 
-    @GetMapping("/{productId}")
-    public ProductDto findProductById(@PathVariable UUID productId) {
+    @Override
+    public ProductDto findProductById(UUID productId) {
         return productService.findProductById(productId);
     }
 
-    @GetMapping
-    public PageProductDto findProducts(@RequestParam(required = false) ProductCategory category,
-                                       Pageable pageable) {
+    @Override
+    public PageProductDto findProducts(ProductCategory category, Pageable pageable) {
         log.info("pageable: {}", pageable);
         return productService.findProducts(category, pageable);
     }
 
-    @PostMapping
-    public ProductDto updateProduct(@RequestBody ProductDto product) {
+    @Override
+    public ProductDto updateProduct(ProductDto product) {
         return productService.updateProduct(product);
     }
 
-    @PostMapping("/removeProductFromStore")
-    public Boolean removeProductFromStore(@RequestBody UUID productId) {
+    @Override
+    public boolean removeProductFromStore(UUID productId) {
         return productService.removeProductFromStore(productId);
     }
 
-    @PostMapping("/quantityState")
-    public Boolean setProductQuantityState(@RequestParam UUID productId, @RequestParam QuantityState quantityState) {
+    @Override
+    public boolean setProductQuantityState(UUID productId, QuantityState quantityState) {
         return productService.setProductQuantityState(productId, quantityState);
     }
 }

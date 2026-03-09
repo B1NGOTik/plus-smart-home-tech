@@ -13,34 +13,31 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/shopping-cart")
 @RequiredArgsConstructor
-public class ShoppingCartController {
+public class ShoppingCartController implements ShoppingCartRestController {
     private final ShoppingCartService cartService;
 
-    @GetMapping
-    public ShoppingCartDto findCartByUsername(@RequestParam String username) {
+    @Override
+    public ShoppingCartDto findCartByUsername(String username) {
         return cartService.findCartByUsername(username);
     }
 
-    @PutMapping
-    public ShoppingCartDto addProductInCart(@RequestParam String username,
-                                            @RequestBody Map<UUID, Integer> newProducts) {
+    @Override
+    public ShoppingCartDto addProductInCart(String username, Map<UUID, Integer> newProducts) {
         return cartService.addProductInCart(username, newProducts);
     }
 
-    @DeleteMapping
-    public void deactivateCart(@RequestParam String username) {
+    @Override
+    public void deactivateCart(String username) {
         cartService.deactivateCart(username);
     }
 
-    @PostMapping("/remove")
-    public ShoppingCartDto removeProductFromCart(@RequestParam String username,
-                                                 @RequestBody List<UUID> removedProducts) {
+    @Override
+    public ShoppingCartDto removeProductFromCart(String username, List<UUID> removedProducts) {
         return cartService.removeProductFromCart(username, removedProducts);
     }
 
-    @PostMapping("/change-quantity")
-    public ShoppingCartDto changeProductQuantity(@RequestParam String username,
-                                                 @RequestBody ChangeProductQuantityRequest request) {
+    @Override
+    public ShoppingCartDto changeProductQuantity(String username, ChangeProductQuantityRequest request) {
         return cartService.changeProductQuantity(username, request);
     }
 }

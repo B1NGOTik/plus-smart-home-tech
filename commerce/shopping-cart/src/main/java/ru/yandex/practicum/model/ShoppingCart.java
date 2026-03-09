@@ -22,11 +22,11 @@ public class ShoppingCart {
     @Column(name = "cart_id")
     UUID cartId;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username")
     String username;
 
-    @Column(name = "active", nullable = false)
-    Boolean active;
+    @Column(name = "active")
+    Boolean active = true;
 
     @ElementCollection
     @CollectionTable(name = "cart_products", schema = "cart", joinColumns = @JoinColumn(name = "cart_id"))
