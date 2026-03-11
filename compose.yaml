@@ -42,7 +42,8 @@ services:
     environment:
       - POSTGRES_PASSWORD=12345
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=analyzer
+      - POSTGRES_DB=smart_home_db
+    restart: unless-stopped
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
       timeout: 5s
