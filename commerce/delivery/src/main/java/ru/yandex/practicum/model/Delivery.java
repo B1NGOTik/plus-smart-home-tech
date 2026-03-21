@@ -12,10 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.yandex.practicum.delivery.DeliveryState;
 
 import java.util.UUID;
@@ -25,25 +23,26 @@ import java.util.UUID;
 @Data
 @Builder
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "deliveries", schema = "delivery")
 public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "delivery_id")
-    private UUID deliveryId;
+    UUID deliveryId;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "from_address_id")
-    private Address fromAddress;
+    Address fromAddress;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "to_address_id")
-    private Address toAddress;
+    Address toAddress;
 
     @Column(name = "order_id", nullable = false)
-    private UUID orderId;
+    UUID orderId;
 
     @Column(name = "delivery_state", nullable = false)
     @Enumerated(EnumType.STRING)
-    private DeliveryState deliveryState;
+    DeliveryState deliveryState;
 }

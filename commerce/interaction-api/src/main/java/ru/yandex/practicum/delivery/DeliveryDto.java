@@ -1,9 +1,7 @@
 package ru.yandex.practicum.delivery;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ru.yandex.practicum.warehouse.AddressDto;
 
 import java.util.UUID;
@@ -11,6 +9,7 @@ import java.util.UUID;
 @Data
 @Builder
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 public class DeliveryDto {
     UUID deliveryId;

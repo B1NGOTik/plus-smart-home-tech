@@ -6,10 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.UUID;
 
@@ -18,20 +16,21 @@ import java.util.UUID;
 @Data
 @Builder
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "addresses", schema = "delivery")
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "address_id")
-    private UUID addressId;
+    UUID addressId;
 
-    private String country;
+    String country;
 
-    private String city;
+    String city;
 
-    private String street;
+    String street;
 
-    private String house;
+    String house;
 
-    private String flat;
+    String flat;
 }
