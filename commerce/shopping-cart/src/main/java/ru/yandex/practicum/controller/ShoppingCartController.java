@@ -3,6 +3,7 @@ package ru.yandex.practicum.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.api.ShoppingCartRestController;
 import ru.yandex.practicum.cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.cart.ShoppingCartDto;
 import ru.yandex.practicum.service.ShoppingCartService;
@@ -42,5 +43,10 @@ public class ShoppingCartController implements ShoppingCartRestController {
     @Override
     public ShoppingCartDto changeProductQuantity(String username, ChangeProductQuantityRequest request) {
         return cartService.changeProductQuantity(username, request);
+    }
+
+    @Override
+    public String getUsernameById(UUID cartId) {
+        return "";
     }
 }

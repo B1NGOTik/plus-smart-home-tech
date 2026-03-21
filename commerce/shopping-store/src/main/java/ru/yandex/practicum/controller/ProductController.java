@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.api.ShoppingStoreRestController;
 import ru.yandex.practicum.store.PageProductDto;
 import ru.yandex.practicum.store.ProductCategory;
 import ru.yandex.practicum.store.ProductDto;

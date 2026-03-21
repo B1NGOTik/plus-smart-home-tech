@@ -7,6 +7,7 @@ import ru.yandex.practicum.store.ProductCategory;
 import ru.yandex.practicum.store.ProductState;
 import ru.yandex.practicum.store.QuantityState;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -44,5 +45,5 @@ public class Product {
     ProductCategory productCategory;
 
     @Column(name = "price")
-    Double price;
+    BigDecimal price;
 }

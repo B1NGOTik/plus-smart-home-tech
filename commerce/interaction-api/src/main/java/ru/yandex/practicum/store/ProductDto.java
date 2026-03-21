@@ -2,6 +2,7 @@ package ru.yandex.practicum.store;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -14,5 +15,5 @@ public class ProductDto {
     QuantityState quantityState;
     ProductState productState;
     ProductCategory productCategory;
-    Double price;
+    BigDecimal price;
 }
