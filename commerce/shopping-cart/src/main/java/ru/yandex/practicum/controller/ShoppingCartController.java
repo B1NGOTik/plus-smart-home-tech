@@ -1,7 +1,9 @@
 package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.api.ShoppingCartRestController;
 import ru.yandex.practicum.cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.cart.ShoppingCartDto;
 import ru.yandex.practicum.service.ShoppingCartService;
@@ -13,6 +15,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/shopping-cart")
 @RequiredArgsConstructor
+@Slf4j
 public class ShoppingCartController implements ShoppingCartRestController {
     private final ShoppingCartService cartService;
 
@@ -23,6 +26,7 @@ public class ShoppingCartController implements ShoppingCartRestController {
 
     @Override
     public ShoppingCartDto addProductInCart(String username, Map<UUID, Integer> newProducts) {
+        log.info("Обращение к cart");
         return cartService.addProductInCart(username, newProducts);
     }
 
@@ -39,5 +43,10 @@ public class ShoppingCartController implements ShoppingCartRestController {
     @Override
     public ShoppingCartDto changeProductQuantity(String username, ChangeProductQuantityRequest request) {
         return cartService.changeProductQuantity(username, request);
+    }
+
+    @Override
+    public String getUsernameById(UUID cartId) {
+        return "";
     }
 }
